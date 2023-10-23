@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 public class ConfirmationToken {
     @SequenceGenerator(
             name = "confirmation_token_sequence",
-            sequenceName = "user_sequence",
+            sequenceName = "confirmation_token_sequence",
             allocationSize = 1
     )
     @Id

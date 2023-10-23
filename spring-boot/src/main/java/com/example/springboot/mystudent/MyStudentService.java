@@ -1,21 +1,19 @@
-package com.example.springboot.newtry.services;
+package com.example.springboot.mystudent;
 
-import com.example.springboot.newtry.models.MyStudent;
-import com.example.springboot.newtry.repositories.MyStudentRepository;
-import com.example.springboot.student.Student;
+import com.example.springboot.mystudent.MyStudent;
+import com.example.springboot.mystudent.MyStudentRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
-public class StudentRegistrationService {
+public class MyStudentService {
     private final MyStudentRepository myStudentRepository;
 
 
-    public StudentRegistrationService(MyStudentRepository myStudentRepository) {
+    public MyStudentService(MyStudentRepository myStudentRepository) {
         this.myStudentRepository = myStudentRepository;
     }
 

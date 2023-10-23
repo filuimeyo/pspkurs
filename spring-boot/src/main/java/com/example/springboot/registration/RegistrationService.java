@@ -4,6 +4,10 @@ import com.example.springboot.appuser.AppUser;
 import com.example.springboot.appuser.AppUserRole;
 import com.example.springboot.appuser.AppUserService;
 import com.example.springboot.email.EmailSender;
+import com.example.springboot.mystudent.MyStudent;
+import com.example.springboot.teacher.Teacher;
+import com.example.springboot.requestModels.StudentRegistrationRequest;
+import com.example.springboot.requestModels.TeacherRegistrationRequest;
 import com.example.springboot.registration.token.ConfirmationToken;
 import com.example.springboot.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
@@ -44,6 +48,66 @@ public class RegistrationService {
 
         return token;
 
+    }
+
+
+    public String registerStudent(StudentRegistrationRequest request) {
+        boolean isValidEmail = emailValidator.test(request.getEmail());
+
+        if (!isValidEmail) {
+            throw new IllegalStateException("email not valid");
+        }
+
+        AppUser user = new AppUser(
+                request.getEmail(),
+                request.getPassword(),
+                AppUserRole.STUDENT
+        );
+
+        String token = appUserService.signUpStudent(
+                user,
+                new MyStudent(
+                        request.getFirstName(),
+                        request.getLastName(),
+                        user
+                )
+        );
+
+        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
+        emailSender.send(
+                request.getEmail(),
+                buildEmail(request.getEmail(), link));
+        return token;
+    }
+
+    public String registerTeacher(TeacherRegistrationRequest request) {
+        boolean isValidEmail = emailValidator.test(request.getEmail());
+
+        if (!isValidEmail) {
+            throw new IllegalStateException("email not valid");
+        }
+
+        AppUser user = new AppUser(
+                request.getEmail(),
+                request.getPassword(),
+                AppUserRole.TEACHER
+        );
+
+        String token = appUserService.signUpTeacher(
+                user,
+                new Teacher(
+                        request.getFirstName(),
+                        request.getLastName(),
+                        request.getLessonPrice(),
+                        user
+                )
+        );
+
+        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
+        emailSender.send(
+                request.getEmail(),
+                buildEmail(request.getEmail(), link));
+        return token;
     }
 
     @Transactional

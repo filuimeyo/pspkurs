@@ -1,5 +1,7 @@
 package com.example.springboot.registration;
 
+import com.example.springboot.requestModels.StudentRegistrationRequest;
+import com.example.springboot.requestModels.TeacherRegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,16 @@ public class RegistrationController {
     @PostMapping
     public String register(@RequestBody RegistrationRequest request){
         return  registrationService.register(request);
+    }
+
+    @PostMapping(path = "student")
+    public String registerStudent(@RequestBody StudentRegistrationRequest request){
+        return  registrationService.registerStudent(request);
+    }
+
+    @PostMapping(path = "teacher")
+    public String registerTeacher(@RequestBody TeacherRegistrationRequest request){
+        return  registrationService.registerTeacher(request);
     }
 
 

@@ -1,6 +1,6 @@
-package com.example.springboot.newtry.repositories;
+package com.example.springboot.teacher;
 
-import com.example.springboot.newtry.models.Teacher;
+import com.example.springboot.teacher.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {

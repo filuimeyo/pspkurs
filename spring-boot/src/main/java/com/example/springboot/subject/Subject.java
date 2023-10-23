@@ -1,27 +1,29 @@
-package com.example.springboot.newtry.models;
+package com.example.springboot.subject;
 
 
+import com.example.springboot.teacher.Teacher;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
-public class Subject {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Subject implements java.io.Serializable {
 
     @SequenceGenerator(
             name = "subject_sequence",
@@ -36,7 +38,16 @@ public class Subject {
     private Long id;
     private String name;
 
+    @ManyToMany(mappedBy = "teacherSubjects")
+    //@JsonManagedReference
+    private Set<Teacher> teachers = new HashSet<>();
+
     public Subject(String name) {
         this.name = name;
+    }
+
+    public Subject(String name, Set<Teacher> teachers) {
+        this.name = name;
+        this.teachers = teachers;
     }
 }

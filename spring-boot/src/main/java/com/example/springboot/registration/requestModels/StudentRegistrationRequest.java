@@ -1,4 +1,4 @@
-package com.example.springboot.requestModels;
+package com.example.springboot.registration.requestModels;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

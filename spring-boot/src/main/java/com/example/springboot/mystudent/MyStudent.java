@@ -1,6 +1,7 @@
 package com.example.springboot.mystudent;
 
 import com.example.springboot.appuser.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -39,10 +40,9 @@ public class MyStudent {
     private String firstName;
     private String lastName;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(
-            nullable = false,
-            name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private AppUser appUser;
 
 

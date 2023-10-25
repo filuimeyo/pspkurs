@@ -2,6 +2,9 @@ package com.example.springboot.student;
 
 
 
+import com.example.springboot.appuser.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -26,6 +29,7 @@ public class Student {
     private LocalDate dob;
     @Transient
     private Integer age;
+
 
     public Student() {
     }

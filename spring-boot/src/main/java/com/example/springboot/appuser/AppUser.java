@@ -1,6 +1,11 @@
 package com.example.springboot.appuser;
 
 
+import com.example.springboot.mystudent.MyStudent;
+import com.example.springboot.registration.token.ConfirmationToken;
+import com.example.springboot.student.Student;
+import com.example.springboot.teacher.Teacher;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,14 +40,29 @@ public class AppUser implements UserDetails {
     private Long id;
     private String email;
     private String password;
+
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
-    private Boolean locked = false;
-     private Boolean enabled = false;
 
-    public AppUser( String email,
-                    String password,
-                    AppUserRole appUserRole) {
+    private Boolean locked = false;
+    private Boolean enabled = false;
+
+    @OneToOne(mappedBy = "appUser")
+    private Teacher teacher;
+
+
+    @OneToOne(mappedBy = "appUser")
+    private MyStudent student;
+
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy="appUser")
+    private Set<ConfirmationToken> tokens;
+
+    public AppUser(String email,
+                   String password,
+                   AppUserRole appUserRole) {
         this.email = email;
         this.password = password;
         this.appUserRole = appUserRole;
@@ -60,8 +81,8 @@ public class AppUser implements UserDetails {
         return password;
     }
 
-    public String getUsername(){
-        return  email;
+    public String getUsername() {
+        return email;
     }
 
     @Override

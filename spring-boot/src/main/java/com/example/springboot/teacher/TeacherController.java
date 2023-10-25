@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/registration/teacher")
@@ -22,17 +23,30 @@ public class TeacherController {
         return teacherService.getTeachers();
     }
 
-    @DeleteMapping(path = "{id}")
+   /* @DeleteMapping(path = "{id}")
     public void deleteTeacher(@PathVariable("id") Long id) {
         teacherService.deleteTeacher(id);
+    }*/
+
+    //findTeachersBySubjectId
+
+    @GetMapping(path = "{subject_id}")
+    public Optional<List<Teacher>> getTeachers(@PathVariable("subject_id") Long id) {
+        return teacherService.findTeachersBySubjectId(id);
     }
 
-    @PutMapping(path = "{studentId}")
-    public void updateTeacher(@PathVariable("studentId") Long studentId,
+    @GetMapping(path = "one/{id}")
+    public Optional<Teacher> getTeacherById(@PathVariable("id") Long id) {
+        return teacherService.findTeacherById(id);
+    }
+
+
+    @PutMapping(path = "{id}")
+    public void updateTeacher(@PathVariable("id") Long id,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
                               @RequestParam(required = false) Double price){
-        teacherService.updateTeacher(studentId, firstName, lastName, price);
+        teacherService.updateTeacher(id, firstName, lastName, price);
     }
 
 }

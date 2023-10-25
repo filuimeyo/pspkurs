@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class TeacherService {
@@ -23,6 +24,15 @@ public class TeacherService {
     public void addNewTeacher(Teacher teacher) {
         teacherRepository.save(teacher);
     }
+
+    public Optional<Teacher> findTeacherById(Long id){
+        return teacherRepository.findById(id);
+    }
+
+    public Optional<List<Teacher>> findTeachersBySubjectId(Long subjectId){
+        return teacherRepository.findTeachersBySubjectId(subjectId);
+    }
+
 
     public void deleteTeacher(Long id) {
         boolean exist = teacherRepository.existsById(id);

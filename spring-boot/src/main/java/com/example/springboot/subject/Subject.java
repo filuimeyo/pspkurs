@@ -2,7 +2,9 @@ package com.example.springboot.subject;
 
 
 import com.example.springboot.teacher.Teacher;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,8 +25,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Subject implements java.io.Serializable {
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Subject {
 
     @SequenceGenerator(
             name = "subject_sequence",
@@ -39,8 +42,11 @@ public class Subject implements java.io.Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "teacherSubjects")
-    //@JsonManagedReference
+    @JsonBackReference
     private Set<Teacher> teachers = new HashSet<>();
+
+    @Transient
+    private Long count;
 
     public Subject(String name) {
         this.name = name;
@@ -49,5 +55,9 @@ public class Subject implements java.io.Serializable {
     public Subject(String name, Set<Teacher> teachers) {
         this.name = name;
         this.teachers = teachers;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
     }
 }

@@ -23,6 +23,11 @@ public class SubjectController {
        return subjectService.getSubjects();
     }
 
+    @GetMapping(path = "all")
+    public List<Subject> getSubjectsWithCount(){
+        return subjectService.getSubjectsWithTeacherCount();
+    }
+
 
     @GetMapping(path = "{id}")
     public Optional<Subject> getSubjectById(@PathVariable Long id){

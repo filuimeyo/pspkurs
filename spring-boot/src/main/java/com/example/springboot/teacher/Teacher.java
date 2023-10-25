@@ -1,8 +1,12 @@
 package com.example.springboot.teacher;
 
 import com.example.springboot.appuser.AppUser;
+import com.example.springboot.certificate.Certificate;
 import com.example.springboot.subject.Subject;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import java.util.HashSet;
@@ -28,8 +33,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Teacher implements java.io.Serializable {
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Teacher {
     @SequenceGenerator(
             name = "teacher_sequence",
             sequenceName = "teacher_sequence",
@@ -45,6 +50,7 @@ public class Teacher implements java.io.Serializable {
     private String lastName;
     private double lessonPrice;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             nullable = false,
@@ -56,13 +62,16 @@ public class Teacher implements java.io.Serializable {
     @ManyToMany()
     @JoinTable(
             name = "teacher_subject",
-            joinColumns =  @JoinColumn(name = "teacher_id", referencedColumnName = "id") ,
-            inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id")
+            joinColumns =  @JoinColumn(name = "teacher_id") ,
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
-    //@JsonBackReference
+    @JsonManagedReference
     private Set<Subject> teacherSubjects = new HashSet<>();
 
 
+    @OneToMany(mappedBy="teacher")
+    @JsonManagedReference
+    private Set<Certificate> certificates;
 
     public Teacher(String firstName, String lastName, double lessonPrice, AppUser appUser) {
         this.firstName = firstName;

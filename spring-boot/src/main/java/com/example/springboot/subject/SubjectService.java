@@ -32,7 +32,6 @@ public class SubjectService {
     }
 
     public List<Subject> getSubjects() {
-
         return subjectRepository.findAll();
 
     }

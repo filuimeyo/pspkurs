@@ -4,7 +4,7 @@ import com.example.springboot.appuser.AppUser;
 import com.example.springboot.appuser.AppUserRole;
 import com.example.springboot.appuser.AppUserService;
 import com.example.springboot.email.EmailSender;
-import com.example.springboot.mystudent.MyStudent;
+import com.example.springboot.student.Student;
 import com.example.springboot.teacher.Teacher;
 import com.example.springboot.registration.requestModels.StudentRegistrationRequest;
 import com.example.springboot.registration.requestModels.TeacherRegistrationRequest;
@@ -66,7 +66,7 @@ public class RegistrationService {
 
         String token = appUserService.signUpStudent(
                 user,
-                new MyStudent(
+                new Student(
                         request.getFirstName(),
                         request.getLastName(),
                         user

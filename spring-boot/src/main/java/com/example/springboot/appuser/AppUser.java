@@ -1,9 +1,9 @@
 package com.example.springboot.appuser;
 
 
-import com.example.springboot.mystudent.MyStudent;
-import com.example.springboot.registration.token.ConfirmationToken;
 import com.example.springboot.student.Student;
+import com.example.springboot.notification.Notification;
+import com.example.springboot.registration.token.ConfirmationToken;
 import com.example.springboot.teacher.Teacher;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
@@ -52,13 +52,17 @@ public class AppUser implements UserDetails {
 
 
     @OneToOne(mappedBy = "appUser")
-    private MyStudent student;
+    private Student student;
 
 
 
     @JsonIgnore
     @OneToMany(mappedBy="appUser")
     private Set<ConfirmationToken> tokens;
+
+    @JsonIgnore
+    @OneToMany(mappedBy="appUser")
+    private Set<Notification> notifications;
 
     public AppUser(String email,
                    String password,

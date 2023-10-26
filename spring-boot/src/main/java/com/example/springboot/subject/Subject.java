@@ -41,6 +41,7 @@ public class Subject {
     private Long id;
     private String name;
 
+
     @ManyToMany(mappedBy = "teacherSubjects")
     @JsonBackReference
     private Set<Teacher> teachers = new HashSet<>();
@@ -52,9 +53,10 @@ public class Subject {
         this.name = name;
     }
 
-    public Subject(String name, Set<Teacher> teachers) {
+    public Subject(Long id, String name, Long count) {
+        this.id = id;
         this.name = name;
-        this.teachers = teachers;
+        this.count = count;
     }
 
     public void setCount(Long count) {

@@ -13,5 +13,11 @@ import java.util.Optional;
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
 
+    @Query(value = "SELECT subject.*, count from subject " +
+            "inner join public.subject_teacher_count stc on subject.id = stc.subject_id"
+            , nativeQuery = true)
+    Optional<List<Subject>> findWithCount();
 
+    @Query("SELECT s FROM Subject s WHERE s.name = ?1")
+    Optional<Subject> findSubjectByName(String name);
 }

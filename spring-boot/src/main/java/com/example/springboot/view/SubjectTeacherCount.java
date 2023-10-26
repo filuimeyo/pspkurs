@@ -10,15 +10,15 @@ import javax.persistence.Table;
 
 @Getter
 @Entity
-@Table(name="subject_teacher_count")
+//@Table(name="subject_teacher_count")
 @Immutable
 public class SubjectTeacherCount {
 
     @Id
-    @Column(name="subject_id")
+   // @Column(name="subject_id")
     private Long subjectId;
 
-    @Column(name="count")
+   // @Column(name="count")
     private Long count;
 
 }

@@ -1,66 +1,51 @@
 package com.example.springboot.student;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.stereotype.Service;
-
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class StudentService {
-    private final StudentRepository studentRepository ;
+    private final StudentRepository studentRepository;
 
-    @Autowired
+
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
     public List<Student> getStudents(){
         return studentRepository.findAll();
-
     }
 
     public void addNewStudent(Student student) {
-        Optional<Student> studentOptional =  studentRepository
-                .findStudentByEmail(student.getEmail());
-        if(studentOptional.isPresent()){
-            throw new IllegalStateException("email taken");
-        }
         studentRepository.save(student);
     }
 
-    public void deleteStudent(Long studentId) {
-        boolean exist = studentRepository.existsById(studentId);
+    public void deleteStudent(Long id) {
+        boolean exist = studentRepository.existsById(id);
         if(!exist){
             throw new IllegalStateException(
-                    "student with id " + studentId + " does not exist"
+                    "student with id " + id + " does not exist"
             );
         }
-        studentRepository.deleteById(studentId);
+        studentRepository.deleteById(id);
     }
 
     @Transactional
-    public void updateStudent(Long studentId, String name, String email) {
+    public void updateStudent(Long studentId, String firstName, String lastName) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(()-> new IllegalStateException(
                         "student with id " + studentId + " does not exist"
                 ));
-        if(name!=null && !name.isEmpty() && Objects.equals(student.getName(), name)){
-            student.setName(name);
+        if(firstName!=null && !firstName.isEmpty() && Objects.equals(student.getFirstName(), firstName)){
+            student.setFirstName(firstName);
         }
-        if(email!=null && !email.isEmpty() && Objects.equals(student.getEmail(), email)){
-            Optional<Student> studentOptional = studentRepository
-                    .findStudentByEmail(email);
-            if(studentOptional.isPresent()){
-                throw new IllegalStateException("email is taken");
-            }
-            student.setEmail(email);
+        if(lastName!=null && !lastName.isEmpty() && Objects.equals(student.getLastName(), lastName)){
+            student.setLastName(lastName);
         }
+
     }
+
 }

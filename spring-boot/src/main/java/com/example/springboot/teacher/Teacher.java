@@ -2,12 +2,11 @@ package com.example.springboot.teacher;
 
 import com.example.springboot.appuser.AppUser;
 import com.example.springboot.certificate.Certificate;
+import com.example.springboot.student.Student;
 import com.example.springboot.subject.Subject;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,7 +57,6 @@ public class Teacher {
     private AppUser appUser;
 
 
-
     @ManyToMany()
     @JoinTable(
             name = "teacher_subject",
@@ -67,6 +65,11 @@ public class Teacher {
     )
     @JsonManagedReference
     private Set<Subject> teacherSubjects = new HashSet<>();
+
+
+    @ManyToMany(mappedBy = "likedTeachers")
+    @JsonBackReference
+    private Set<Student> students = new HashSet<>();
 
 
     @OneToMany(mappedBy="teacher")

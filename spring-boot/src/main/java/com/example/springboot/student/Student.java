@@ -1,105 +1,90 @@
 package com.example.springboot.student;
 
-
-
 import com.example.springboot.appuser.AppUser;
+import com.example.springboot.teacher.Teacher;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.Period;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-@Entity //for hibernate
-@Table//in db
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Student {
-
-    @Id
     @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
+            name = "my_student_sequence",
+            sequenceName = "my_student_sequence",
             allocationSize = 1
     )
+    @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "student_sequence"
+            generator = "my_student_sequence"
     )
     private Long id;
-    private String name;
-    private String email;
-    private LocalDate dob;
-    @Transient
-    private Integer age;
+    private String firstName;
+    private String lastName;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private AppUser appUser;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_teacher",
+            joinColumns =  @JoinColumn(name = "my_student_id") ,
+            inverseJoinColumns = @JoinColumn(name = "teacher_id")
+    )
+    //@JsonManagedReference
+    private Set<Teacher> likedTeachers = new HashSet<>();
 
 
-    public Student() {
+    public Student(String firstName, String lastName, AppUser appUser) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.appUser = appUser;
     }
 
-    public Student(Long id,
-                   String name,
-                   String email,
-                   LocalDate dob) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.dob = dob;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(appUser, student.appUser) && Objects.equals(likedTeachers, student.likedTeachers);
     }
 
-    public Student(String name,
-                   String email,
-                   LocalDate dob) {
-        this.name = name;
-        this.email = email;
-        this.dob = dob;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
-    public Integer getAge() {
-        return Period.between(this.dob, LocalDate.now()).getYears();
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, appUser, likedTeachers);
     }
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "MyStudent{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", dob=" + dob +
-                ", age=" + age +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", appUser=" + appUser +
+                ", likedTeachers=" + likedTeachers +
                 '}';
     }
 }

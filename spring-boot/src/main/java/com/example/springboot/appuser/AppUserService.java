@@ -1,8 +1,8 @@
 package com.example.springboot.appuser;
 
-import com.example.springboot.mystudent.MyStudent;
+import com.example.springboot.student.Student;
 import com.example.springboot.teacher.Teacher;
-import com.example.springboot.mystudent.MyStudentService;
+import com.example.springboot.student.StudentService;
 import com.example.springboot.teacher.TeacherService;
 import com.example.springboot.registration.token.ConfirmationToken;
 import com.example.springboot.registration.token.ConfirmationTokenService;
@@ -25,7 +25,7 @@ public class AppUserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
 
-    private final MyStudentService myStudentService;
+    private final StudentService studentService;
     private final TeacherService teacherService;
 
 
@@ -74,7 +74,7 @@ public class AppUserService implements UserDetailsService {
 
 
 
-    public String signUpStudent(AppUser appUser, MyStudent student) {
+    public String signUpStudent(AppUser appUser, Student student) {
         boolean userExist = appUserRepository.findByEmail(appUser.getEmail())
                 .isPresent();
 
@@ -90,7 +90,7 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(encodedPas);
 
         appUserRepository.save(appUser);
-        myStudentService.addNewStudent(student);
+        studentService.addNewStudent(student);
 
 
         String token = UUID.randomUUID().toString();

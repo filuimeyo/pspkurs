@@ -34,6 +34,11 @@ public class SubjectController {
        subjectService.addNewSubject(subject, file);
     }
 
+    @GetMapping(path = "all3")
+    public List<Object[]> getALL(){
+        return subjectService.getAll();
+    }
+
 
     @GetMapping
     public List<Subject> getSubjects(){

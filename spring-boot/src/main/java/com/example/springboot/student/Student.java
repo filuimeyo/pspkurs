@@ -3,6 +3,7 @@ package com.example.springboot.student;
 import com.example.springboot.appuser.AppUser;
 import com.example.springboot.teacher.Teacher;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -45,7 +47,7 @@ public class Student {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private AppUser appUser;
 
     @ManyToMany
@@ -54,14 +56,21 @@ public class Student {
             joinColumns =  @JoinColumn(name = "my_student_id") ,
             inverseJoinColumns = @JoinColumn(name = "teacher_id")
     )
-    //@JsonManagedReference
-    private Set<Teacher> likedTeachers = new HashSet<>();
+    @JsonManagedReference
+    private List<Teacher> likedTeachers;
 
 
     public Student(String firstName, String lastName, AppUser appUser) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.appUser = appUser;
+    }
+
+    public Student(String firstName, String lastName, AppUser appUser, List<Teacher> likedTeachers) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.appUser = appUser;
+        this.likedTeachers = likedTeachers;
     }
 
     @Override

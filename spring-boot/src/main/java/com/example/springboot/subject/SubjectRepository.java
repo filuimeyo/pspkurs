@@ -18,6 +18,11 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
             , nativeQuery = true)
     Optional<List<Subject>> findWithCount();
 
+
+    @Query("SELECT s, COALESCE(COUNT(t), 0)  FROM Subject s LEFT JOIN s.teachers t GROUP BY s")
+    List<Object[]> getCountOfTeachersBySubject();
+
+
     @Query("SELECT s FROM Subject s WHERE s.name = ?1")
     Optional<Subject> findSubjectByName(String name);
 }

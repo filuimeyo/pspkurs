@@ -49,6 +49,11 @@ public class SubjectService {
     }
 
 
+    public List<Object[]> getAll(){
+        return subjectRepository.getCountOfTeachersBySubject();
+    }
+
+
     public Optional<Subject> getSubjectById(Long id) {
         return subjectRepository.findById(id);
     }

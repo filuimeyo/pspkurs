@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -69,7 +70,7 @@ public class Teacher {
 
     @ManyToMany(mappedBy = "likedTeachers")
     @JsonBackReference
-    private Set<Student> students = new HashSet<>();
+    private List<Student> students ;
 
 
     @OneToMany(mappedBy="teacher")

@@ -38,9 +38,8 @@ public class Certificate {
             generator = "certificate_sequence"
     )
     private Long id;
-    private String name;
-
-    //picture
+    private  String fileName;
+    private String filePath;
 
     @ManyToOne
     @JoinColumn(name="teacher_id", nullable=false)
@@ -48,6 +47,11 @@ public class Certificate {
     private Teacher teacher;
 
 
+    public Certificate(String fileName, String filePath, Teacher teacher) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.teacher = teacher;
+    }
 
 
 }

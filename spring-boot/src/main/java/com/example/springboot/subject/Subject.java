@@ -41,25 +41,29 @@ public class Subject {
     private Long id;
     private String name;
 
+    private  String fileName;
+    private String filePath;
+
 
     @ManyToMany(mappedBy = "teacherSubjects")
     @JsonBackReference
     private Set<Teacher> teachers = new HashSet<>();
 
-    @Transient
-    private Long count;
+ /*   @Transient
+    private Long count;*/
 
     public Subject(String name) {
         this.name = name;
     }
 
-    public Subject(Long id, String name, Long count) {
+    public Subject(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.count = count;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public Subject(String name, String fileName, String filePath) {
+        this.name = name;
+        this.fileName = fileName;
+        this.filePath = filePath;
     }
 }

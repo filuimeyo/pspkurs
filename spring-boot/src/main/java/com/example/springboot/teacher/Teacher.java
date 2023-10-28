@@ -58,7 +58,7 @@ public class Teacher {
     private AppUser appUser;
 
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "teacher_subject",
             joinColumns =  @JoinColumn(name = "teacher_id") ,
@@ -76,6 +76,7 @@ public class Teacher {
     @OneToMany(mappedBy="teacher")
     @JsonManagedReference
     private Set<Certificate> certificates;
+
 
     public Teacher(String firstName, String lastName, double lessonPrice, AppUser appUser) {
         this.firstName = firstName;

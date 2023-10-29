@@ -1,5 +1,6 @@
 package com.example.springboot.subject;
 
+import com.example.springboot.teacher.Teacher;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -65,5 +66,12 @@ public class SubjectController {
     }
 
 
+
+    @GetMapping(path="teachers/{subjectId}")
+    public List<Teacher> getTeachersBySubjectId(
+            @PathVariable Long subjectId
+    ){
+        return subjectService.getTeachersBySubjectId(subjectId);
+    }
 
 }

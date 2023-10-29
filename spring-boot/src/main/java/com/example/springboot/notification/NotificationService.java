@@ -3,6 +3,7 @@ package com.example.springboot.notification;
 import com.example.springboot.student.Student;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,6 +19,14 @@ public class NotificationService {
     public List<Notification> getByUserId(Long userId){
         return notificationRepository.findNotificationsByUserId(userId);
     }
+
+
+    public Notification createNotification(Notification notification){
+        notification.setCreatedAt(LocalDateTime.now());
+        notification.setIsViewed(false);
+        return notificationRepository.save(notification);
+    }
+
 
     public Optional<Notification> getById(Long id) {
         return notificationRepository.findById(id);

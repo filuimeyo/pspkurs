@@ -1,5 +1,7 @@
 package com.example.springboot.student;
 
+import com.example.springboot.lesson_application.LessonApplication;
+import com.example.springboot.rating.Rating;
 import com.example.springboot.appuser.AppUser;
 import com.example.springboot.teacher.Teacher;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,9 +19,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -56,9 +58,17 @@ public class Student {
             joinColumns =  @JoinColumn(name = "my_student_id") ,
             inverseJoinColumns = @JoinColumn(name = "teacher_id")
     )
-    @JsonManagedReference
-    private List<Teacher> likedTeachers;
+    @JsonIgnore
+    private Set<Teacher> likedTeachers;
 
+
+    @OneToMany(mappedBy="student")
+    @JsonIgnore
+    private Set<Rating> teacherRating;
+
+    @OneToMany(mappedBy="student")
+    @JsonManagedReference
+    private Set<LessonApplication> lessonApplications;
 
     public Student(String firstName, String lastName, AppUser appUser) {
         this.firstName = firstName;
@@ -66,7 +76,7 @@ public class Student {
         this.appUser = appUser;
     }
 
-    public Student(String firstName, String lastName, AppUser appUser, List<Teacher> likedTeachers) {
+    public Student(String firstName, String lastName, AppUser appUser, Set<Teacher> likedTeachers) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.appUser = appUser;

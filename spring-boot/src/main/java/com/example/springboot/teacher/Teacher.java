@@ -1,5 +1,8 @@
 package com.example.springboot.teacher;
 
+import com.example.springboot.lesson_application.LessonApplication;
+import com.example.springboot.lesson_purpose.LessonPurpose;
+import com.example.springboot.rating.Rating;
 import com.example.springboot.appuser.AppUser;
 import com.example.springboot.certificate.Certificate;
 import com.example.springboot.student.Student;
@@ -22,6 +25,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -68,6 +72,17 @@ public class Teacher {
     private Set<Subject> teacherSubjects = new HashSet<>();
 
 
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "teacher_purpose",
+            joinColumns =  @JoinColumn(name = "teacher_id") ,
+            inverseJoinColumns = @JoinColumn(name = "purpose_id")
+    )
+    @JsonManagedReference
+    private Set<LessonPurpose> purposes = new HashSet<>();
+
+
     @ManyToMany(mappedBy = "likedTeachers")
     @JsonBackReference
     private List<Student> students ;
@@ -77,6 +92,18 @@ public class Teacher {
     @JsonManagedReference
     private Set<Certificate> certificates;
 
+
+    @OneToMany(mappedBy="teacher")
+    @JsonManagedReference
+    private Set<Rating> teacherRating;
+
+    @Transient
+    private Double finalRating;
+
+
+    @OneToMany(mappedBy="teacher")
+    @JsonManagedReference
+    private Set<LessonApplication> lessonApplications;
 
     public Teacher(String firstName, String lastName, double lessonPrice, AppUser appUser) {
         this.firstName = firstName;
@@ -116,5 +143,19 @@ public class Teacher {
                 ", appUser=" + appUser +
                 ", teacherSubjects=" + teacherSubjects +
                 '}';
+    }
+
+    public void setFinalRating() {
+        this.finalRating = (double) teacherRating.size();
+                /*.stream().map(Rating::getRating).map(Double::valueOf)
+                .reduce(Double::sum).map(it->it/teacherRating.size())
+                .orElse(0.0);*/
+    }
+
+
+    public Double getFinalRating() {
+        return  teacherRating.stream().map(Rating::getRating).map(Double::valueOf)
+                .reduce(Double::sum).map(it->it/teacherRating.size())
+                .orElse(0.0);
     }
 }

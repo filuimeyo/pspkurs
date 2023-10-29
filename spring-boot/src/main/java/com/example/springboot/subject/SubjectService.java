@@ -1,6 +1,7 @@
 package com.example.springboot.subject;
 
 import com.example.springboot.image.FileData;
+import com.example.springboot.teacher.Teacher;
 import com.example.springboot.view.SubjectTeacherViewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,9 @@ public class SubjectService {
 
 
     private final SubjectRepository subjectRepository;
-    private final SubjectTeacherViewService subjectTeacherViewService;
 
     public SubjectService(SubjectRepository subjectRepository, SubjectTeacherViewService subjectTeacherViewService) {
         this.subjectRepository = subjectRepository;
-        this.subjectTeacherViewService = subjectTeacherViewService;
     }
 
     public List<Subject> getSubjects() {
@@ -40,6 +39,9 @@ public class SubjectService {
     }
 
 
+    public List<Teacher> getTeachersBySubjectId(long subjectId){
+        return subjectRepository.findTeachersBySubjectId(subjectId);
+    }
 
 
     public Optional<Subject> getSubjectById(Long id) {

@@ -2,6 +2,10 @@ package com.example.springboot.teacher;
 
 import com.example.springboot.certificate.Certificate;
 import com.example.springboot.certificate.CertificateRepository;
+import com.example.springboot.rating.Rating;
+import com.example.springboot.rating.RatingRepository;
+import com.example.springboot.student.Student;
+import com.example.springboot.student.StudentRepository;
 import com.example.springboot.subject.Subject;
 import com.example.springboot.subject.SubjectRepository;
 import org.springframework.stereotype.Service;
@@ -22,14 +26,20 @@ import java.util.UUID;
 public class TeacherService {
     private final String FOLDER_PATH = "D:/Desktop/uploadspspkurs/";
     private final TeacherRepository teacherRepository;
+
+    private final StudentRepository studentRepository;
     private final SubjectRepository subjectRepository;
     private final CertificateRepository certificateRepository;
 
+    private final RatingRepository ratingRepository;
 
-    public TeacherService(TeacherRepository teacherRepository, SubjectRepository subjectRepository, SubjectRepository subjectRepository1, CertificateRepository certificateRepository) {
+
+    public TeacherService(TeacherRepository teacherRepository, SubjectRepository subjectRepository, StudentRepository studentRepository, SubjectRepository subjectRepository1, CertificateRepository certificateRepository, RatingRepository ratingRepository) {
         this.teacherRepository = teacherRepository;
+        this.studentRepository = studentRepository;
         this.subjectRepository = subjectRepository1;
         this.certificateRepository = certificateRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     public List<Teacher> getTeachers() {
@@ -84,6 +94,43 @@ public class TeacherService {
     }
 
 
+    public String addRating(Long studentId, Long teacherId, Integer rating){
+
+        if(rating==null || rating >10 || rating <1){
+            throw new IllegalStateException(
+                    "cant assign such value, it should be between 1 and 10"
+            );
+        }
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "student with id " + studentId + " does not exist"
+                ));
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "teacher with id " + studentId + " does not exist"
+                ));
+
+
+        Optional<Rating> ratingData =  ratingRepository.findRatingByStudentAndTeacher(studentId, teacherId);
+
+
+        if(ratingData.isPresent()){
+            ratingData.get().setRating(rating);
+            ratingRepository.save(ratingData.get());
+
+            return "Rating updated successfully";
+
+        } else{
+             ratingRepository.save(
+                    new Rating(rating, teacher, student)
+            );
+
+            return "Rating added successfully";
+        }
+
+    }
+
     public void deleteTeacher(Long id) {
         boolean exist = teacherRepository.existsById(id);
         if (!exist) {
@@ -98,7 +145,7 @@ public class TeacherService {
     public void updateTeacher(Long studentId, String firstName, String lastName, Double price) {
         Teacher teacher = teacherRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalStateException(
-                        "student with id " + studentId + " does not exist"
+                        "teacher with id " + studentId + " does not exist"
                 ));
         if (firstName != null && !firstName.isEmpty() && Objects.equals(teacher.getFirstName(), firstName)) {
             teacher.setFirstName(firstName);

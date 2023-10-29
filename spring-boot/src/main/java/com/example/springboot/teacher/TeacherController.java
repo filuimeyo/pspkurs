@@ -2,6 +2,7 @@ package com.example.springboot.teacher;
 
 import com.example.springboot.certificate.Certificate;
 import com.example.springboot.certificate.CertificateService;
+import com.example.springboot.rating.Rating;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,6 +72,17 @@ public class TeacherController {
     ) throws IOException {
         return teacherService.addNewCertificate(teacherId, file);
     }
+
+
+    @PutMapping(path="rating/{studentId}/{teacherId}/{rating}")
+    public String addRating(
+            @PathVariable Long studentId,
+            @PathVariable Long teacherId,
+            @PathVariable Integer rating
+    ){
+        return teacherService.addRating(studentId, teacherId, rating);
+    }
+
 
     @PutMapping("assign/{teacherId}/{subjectId}")
     public Teacher assignSubjectToTeacher(

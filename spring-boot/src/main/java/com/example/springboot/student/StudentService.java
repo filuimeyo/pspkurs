@@ -1,10 +1,12 @@
 package com.example.springboot.student;
 
+import com.example.springboot.teacher.Teacher;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -48,4 +50,16 @@ public class StudentService {
 
     }
 
+    public List<Teacher> getLikedTeachers(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()->new IllegalStateException(
+                        "student with id " + studentId + " does not exist"
+                ));
+
+        return studentRepository.getLikedTeachers(studentId);
+    }
+
+    public Optional<Student> getStudentById(Long id) {
+        return studentRepository.findById(id);
+    }
 }

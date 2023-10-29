@@ -1,11 +1,11 @@
 package com.example.springboot.subject;
 
 
+import com.example.springboot.lesson_application.LessonApplication;
+import com.example.springboot.rating.Rating;
 import com.example.springboot.teacher.Teacher;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import java.util.HashSet;
@@ -49,8 +50,11 @@ public class Subject {
     @JsonBackReference
     private Set<Teacher> teachers = new HashSet<>();
 
- /*   @Transient
-    private Long count;*/
+
+    @OneToMany(mappedBy="subject")
+    @JsonManagedReference
+    private Set<LessonApplication> lessonApplications;
+
 
     public Subject(String name) {
         this.name = name;
@@ -66,4 +70,5 @@ public class Subject {
         this.fileName = fileName;
         this.filePath = filePath;
     }
+
 }

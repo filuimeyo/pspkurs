@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 public class SubjectService {
 
-    private final String FOLDER_PATH = "D:/Desktop/uploadspspkurs/";
+    private final String FOLDER_PATH = "D:/Desktop/uploadspspkurs/subject/";
 
 
     private final SubjectRepository subjectRepository;
@@ -28,14 +28,10 @@ public class SubjectService {
         this.subjectRepository = subjectRepository;
     }
 
-    public List<Subject> getSubjects() {
-        return subjectRepository.findAll();
-
-    }
 
 
-    public List<Object[]> getAll() {
-        return subjectRepository.getCountOfTeachersBySubject();
+    public List<Object[]> getAll(String name) {
+        return subjectRepository.getCountOfTeachersBySubject(name);
     }
 
 

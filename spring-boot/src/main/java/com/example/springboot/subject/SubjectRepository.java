@@ -17,9 +17,9 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     //todo: filter enabled and locked users
     @Query("SELECT s, COALESCE(COUNT(t), 0)  FROM Subject s " +
-            "left JOIN s.teachers t " +
+            "left JOIN s.teachers t where s.name like %?1%" +
             " group by s")
-    List<Object[]> getCountOfTeachersBySubject(); //для главной и для др
+    List<Object[]> getCountOfTeachersBySubject(String name); //для главной и для др
 
     @Query("SELECT s FROM Subject s WHERE s.name = ?1")
     Optional<Subject> findSubjectByName(String name);

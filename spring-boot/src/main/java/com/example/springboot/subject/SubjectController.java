@@ -49,16 +49,18 @@ public class SubjectController {
 
     }
 
-    @GetMapping(path = "all")
-    public List<Object[]> getALL(){
-        return subjectService.getAll();
+    @GetMapping()
+    public ResponseEntity<?> getALL(
+            @RequestParam String name
+    ){
+       //return subjectService.getAll();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(subjectService.getAll(name));
     }
 
-
-    @GetMapping
-    public List<Subject> getSubjects(){
-       return subjectService.getSubjects();
-    }
 
     @GetMapping(path = "{id}")
     public Optional<Subject> getSubjectById(@PathVariable Long id){

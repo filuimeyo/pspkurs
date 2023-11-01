@@ -41,8 +41,14 @@ public class TeacherController {
     //findTeachersBySubjectId
 
     @GetMapping(path = "subject/{subject_id}")
-    public Optional<List<Teacher>> getTeachers(@PathVariable("subject_id") Long id) {
-        return teacherService.findTeachersBySubjectId(id);
+    public ResponseEntity<?> getTeachers(@PathVariable("subject_id") Long id) {
+
+        //return teacherService.findTeachersBySubjectId(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(teacherService.findTeachersBySubjectId(id));
     }
 
     @GetMapping(path = "one/{id}")

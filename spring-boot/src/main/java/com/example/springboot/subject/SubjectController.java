@@ -2,6 +2,7 @@ package com.example.springboot.subject;
 
 import com.example.springboot.teacher.Teacher;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,17 @@ public class SubjectController {
     }
 
 
+    @GetMapping(path = "popular")
+    public ResponseEntity<?> getMostPopularSubjects(){
+        //return subjectService.getAll();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(subjectService.getMostPopularSubjects(PageRequest.of(0, 6)));
+    }
+
+
     @GetMapping(path = "{id}")
     public Optional<Subject> getSubjectById(@PathVariable Long id){
         return subjectService.getSubjectById(id);
@@ -75,5 +87,7 @@ public class SubjectController {
     ){
         return subjectService.getTeachersBySubjectId(subjectId);
     }
+
+
 
 }

@@ -1,9 +1,8 @@
 package com.example.springboot.subject;
 
-import com.example.springboot.image.FileData;
 import com.example.springboot.teacher.Teacher;
 import com.example.springboot.view.SubjectTeacherViewService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,10 +29,14 @@ public class SubjectService {
 
 
 
+
     public List<Object[]> getAll(String name) {
         return subjectRepository.getCountOfTeachersBySubject(name);
     }
 
+    public List<Subject> getMostPopularSubjects(PageRequest pageRequest) {
+        return subjectRepository.getMostPopularSubjects(pageRequest);
+    }
 
     public List<Teacher> getTeachersBySubjectId(long subjectId){
         return subjectRepository.findTeachersBySubjectId(subjectId);
@@ -81,4 +84,5 @@ public class SubjectService {
 
         return images;
     }
+
 }

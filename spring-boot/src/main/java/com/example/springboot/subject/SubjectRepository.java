@@ -3,6 +3,7 @@ package com.example.springboot.subject;
 import com.example.springboot.student.Student;
 import com.example.springboot.subject.Subject;
 import com.example.springboot.teacher.Teacher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,14 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     //todo: filter enabled and locked users
     @Query("SELECT s, COALESCE(COUNT(t), 0)  FROM Subject s " +
             "left JOIN s.teachers t where s.name like %?1%" +
-            " group by s")
-    List<Object[]> getCountOfTeachersBySubject(String name); //для главной и для др
+            " group by s order by COALESCE(COUNT(t), 0) DESC ")
+    List<Object[]> getCountOfTeachersBySubject(String name); //для cтраницы со всеми предметами
+
+    @Query("SELECT s, COALESCE(COUNT(t), 0)  FROM Subject s " +
+            " left JOIN s.teachers t " +
+            " group by s order by COALESCE(COUNT(t), 0) DESC ")
+    List<Subject> getMostPopularSubjects(PageRequest pageRequest); //для главной
+
 
     @Query("SELECT s FROM Subject s WHERE s.name = ?1")
     Optional<Subject> findSubjectByName(String name);

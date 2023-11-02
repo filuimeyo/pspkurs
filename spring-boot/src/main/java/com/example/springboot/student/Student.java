@@ -70,6 +70,11 @@ public class Student {
     @JsonManagedReference
     private Set<LessonApplication> lessonApplications;
 
+    public Student(String firstName, AppUser appUser) {
+        this.firstName = firstName;
+        this.appUser = appUser;
+    }
+
     public Student(String firstName, String lastName, AppUser appUser) {
         this.firstName = firstName;
         this.lastName = lastName;

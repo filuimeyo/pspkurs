@@ -68,7 +68,6 @@ public class RegistrationService {
                 user,
                 new Student(
                         request.getFirstName(),
-                        request.getLastName(),
                         user
                 )
         );
@@ -97,7 +96,6 @@ public class RegistrationService {
                 user,
                 new Teacher(
                         request.getFirstName(),
-                        request.getLastName(),
                         request.getLessonPrice(),
                         user
                 )

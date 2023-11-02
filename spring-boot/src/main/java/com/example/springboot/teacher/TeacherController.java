@@ -70,6 +70,28 @@ public class TeacherController {
 
     }
 
+    @PostMapping(path="profileimage/{teacherId}")
+    public ResponseEntity<?> setProfilePic(
+            @PathVariable Long teacherId,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        String result =  teacherService.setProfilePic(teacherId, file);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(result);
+    }
+
+    @GetMapping(path = "profileimage/file/{fileName}")
+    public ResponseEntity<?> uploadProfileImage(
+            @PathVariable String fileName
+    ) throws IOException {
+        System.out.println(fileName);
+        byte[] im = teacherService.downloadTeacherImageFromFileSystem(fileName);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(im);
+
+    }
 
     @PostMapping(path = "imageofdocs/{teacherId}")
     public String addCertificate(

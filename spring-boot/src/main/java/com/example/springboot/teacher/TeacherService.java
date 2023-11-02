@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @Service
 public class TeacherService {
     private final String FOLDER_PATH = "D:/Desktop/uploadspspkurs/";
+    private final String PROFILE_PICTURES_FOLDER_PATH = "D:/Desktop/uploadspspkurs/teacherpic/";
     private final TeacherRepository teacherRepository;
 
     private final StudentRepository studentRepository;
@@ -191,4 +193,40 @@ public class TeacherService {
         return images;
     }
 
+    public byte[] downloadTeacherImageFromFileSystem(String fileName) throws IOException {
+
+        Optional<Teacher> im = teacherRepository.findTeacherByFileName(fileName);
+
+
+        byte[] images = Files.readAllBytes(
+                new File(PROFILE_PICTURES_FOLDER_PATH + im.get().getFileName()).toPath());
+
+        return images;
+    }
+
+    public String setProfilePic(Long teacherId, MultipartFile file) throws IOException {
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "teacher with id " + teacherId + " does not exist"
+                ));
+
+        Teacher savedData;
+        if(file != null){
+            String filename = UUID.randomUUID().toString() + ".jpg";
+            Path saveTO = Paths.get(PROFILE_PICTURES_FOLDER_PATH + filename);
+
+            teacher.setFileName(filename);
+            teacher.setFilePath(String.valueOf(saveTO));
+
+            savedData =  teacherRepository.save(teacher);
+
+            Files.copy(file.getInputStream(), saveTO);
+
+        } else throw new IllegalStateException(
+                "cant save file"
+                );
+
+        if(savedData!=null) return "pic added successfully";
+        return null;
+    }
 }

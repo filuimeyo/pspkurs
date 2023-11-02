@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class StudentRegistrationRequest {
     private final String firstName;
-    private final String lastName;
+    //    private final String lastName;
     private final String email;
     private final String password;
 }

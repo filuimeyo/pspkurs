@@ -15,12 +15,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -52,7 +54,13 @@ public class Teacher {
     private Long id;
     private String firstName;
     private String lastName;
+
+    @Column(columnDefinition = "TEXT")
+    private String info;
     private double lessonPrice;
+
+    private  String fileName;
+    private String filePath;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
@@ -108,6 +116,12 @@ public class Teacher {
     public Teacher(String firstName, String lastName, double lessonPrice, AppUser appUser) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.lessonPrice = lessonPrice;
+        this.appUser = appUser;
+    }
+
+    public Teacher(String firstName, double lessonPrice, AppUser appUser) {
+        this.firstName = firstName;
         this.lessonPrice = lessonPrice;
         this.appUser = appUser;
     }

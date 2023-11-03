@@ -30,6 +30,8 @@ public class Rating {
 
     private Integer rating;
 
+    private String comment;
+
 
     @ManyToOne
     @JoinColumn(name="teacher_id", nullable=false)

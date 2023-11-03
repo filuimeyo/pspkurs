@@ -4,6 +4,7 @@ import com.example.springboot.certificate.Certificate;
 import com.example.springboot.certificate.CertificateService;
 import com.example.springboot.rating.Rating;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +53,13 @@ public class TeacherController {
     }
 
     @GetMapping(path = "one/{id}")
-    public Optional<Teacher> getTeacherById(@PathVariable("id") Long id) {
-        return teacherService.findTeacherById(id);
+    public ResponseEntity<?> getTeacherById(@PathVariable("id") Long id) {
+       // return teacherService.findTeacherById(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(teacherService.findTeacherById(id));
+
     }
 
 
@@ -110,6 +116,33 @@ public class TeacherController {
     ){
         return teacherService.addRating(studentId, teacherId, rating);
     }
+
+    @GetMapping(path = "comments/{teacherId}")
+    public ResponseEntity<?> getTeacherComments(
+            @PathVariable Long teacherId
+    ) throws IOException {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(teacherService.getCommentsById(teacherId));
+
+    }
+
+    @GetMapping(path = "finalrating/{teacherId}")
+    public ResponseEntity<?> getFinalRating(
+            @PathVariable Long teacherId
+    ) throws IOException {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(teacherService.getFinalRatingByTeacherId(teacherId));
+
+    }
+
+
+
 
 
     @PutMapping("assign/{teacherId}/{subjectId}")

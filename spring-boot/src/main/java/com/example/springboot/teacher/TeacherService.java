@@ -229,4 +229,12 @@ public class TeacherService {
         if(savedData!=null) return "pic added successfully";
         return null;
     }
+
+    public List<Object> getCommentsById(Long teacherId) {
+        return ratingRepository.getByTeacherId(teacherId);
+    }
+
+    public Double getFinalRatingByTeacherId(Long teacherId) {
+        return ratingRepository.getFinalRatingByTeacherId(teacherId);
+    }
 }

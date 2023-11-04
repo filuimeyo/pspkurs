@@ -1,6 +1,6 @@
 package com.example.springboot.certificate;
 
-import com.example.springboot.image.FileData;
+
 import com.example.springboot.subject.Subject;
 import com.example.springboot.teacher.Teacher;
 import org.springframework.stereotype.Service;

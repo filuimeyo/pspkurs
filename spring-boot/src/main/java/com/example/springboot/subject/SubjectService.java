@@ -1,7 +1,7 @@
 package com.example.springboot.subject;
 
 import com.example.springboot.teacher.Teacher;
-import com.example.springboot.view.SubjectTeacherViewService;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +23,7 @@ public class SubjectService {
 
     private final SubjectRepository subjectRepository;
 
-    public SubjectService(SubjectRepository subjectRepository, SubjectTeacherViewService subjectTeacherViewService) {
+    public SubjectService(SubjectRepository subjectRepository) {
         this.subjectRepository = subjectRepository;
     }
 

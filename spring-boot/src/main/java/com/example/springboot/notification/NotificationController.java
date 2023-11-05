@@ -28,6 +28,10 @@ public class NotificationController {
         return notificationService.getById(id);
     }
 
+    @GetMapping(path = "count/{id}")
+    public Integer getNotViewedNotificationCount(@PathVariable("id") Long id){
+        return notificationService.getNotViewedNotificationCount(id);
+    }
     @PutMapping(path = "user/{id}")
     public void setNotificationViewed(@PathVariable("id") Long id) {
         notificationService.setViewed(id);

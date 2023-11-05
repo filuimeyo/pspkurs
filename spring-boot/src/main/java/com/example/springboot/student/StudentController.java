@@ -2,6 +2,10 @@ package com.example.springboot.student;
 
 import com.example.springboot.teacher.Teacher;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -26,11 +31,17 @@ public class StudentController {
     }
 
     @GetMapping(path ="{id}")
-    public Optional<Student> getStudentById(
+    public ResponseEntity<?> getStudentById(
             @PathVariable Long id
     ) {
-        return studentService.getStudentById(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(studentService.getStudentById(id));
+
     }
+
 
 
     @PostMapping(path="apply/subject/{subjectId}/{studentId}")

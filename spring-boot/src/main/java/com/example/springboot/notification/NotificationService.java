@@ -12,8 +12,13 @@ import java.util.Optional;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
 
+
     public NotificationService(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
+    }
+
+    public Integer getNotViewedNotificationCount(Long userId){
+        return notificationRepository.getNotViewedCount(userId);
     }
 
     public List<Notification> getByUserId(Long userId){

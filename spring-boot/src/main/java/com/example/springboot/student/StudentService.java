@@ -1,5 +1,6 @@
 package com.example.springboot.student;
 
+import com.example.springboot.appuser.AppUser;
 import com.example.springboot.teacher.Teacher;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +60,7 @@ public class StudentService {
         return studentRepository.getLikedTeachers(studentId);
     }
 
-    public Optional<Student> getStudentById(Long id) {
-        return studentRepository.findById(id);
+    public Optional<AppUser> getStudentById(Long id) {
+        return studentRepository.getStudentAndAppUserById(id);
     }
 }
